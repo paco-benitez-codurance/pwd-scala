@@ -1,15 +1,35 @@
 package psw
 
-import org.scalatest.flatspec.AnyFlatSpec
-
 import org.scalatest.flatspec._
 import org.scalatest.matchers.should._
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.freespec.AnyFreeSpec
 
+class PasswordValidatorShould
+    extends AnyFreeSpec
+    with Matchers
+    with BeforeAndAfterEach {
 
-class PasswordValidatorShould extends AnyFlatSpec with Matchers {
+  var passwordValidator: PasswordValidator = PasswordValidator()
 
-  "Password Validator " should "be longer than 8 charcters" in {
-    val passwordValidator = PasswordValidator()
-    passwordValidator.isValid("1234") shouldBe false
+  override def beforeEach(): Unit = {
+    passwordValidator = PasswordValidator()
   }
+
+  "General" - {
+    "Not null argument" in {
+      an[AssertionError] should be thrownBy passwordValidator.isValid(null)
+    }
+  }
+
+  "Length" - {
+    "should be invalid if less than 8 characters" in {
+      passwordValidator.isValid("1234") shouldBe false
+    }
+
+    "should be valid if more than 8 characters" in {
+      passwordValidator.isValid("012346789") shouldBe true
+    }
+  }
+
 }
