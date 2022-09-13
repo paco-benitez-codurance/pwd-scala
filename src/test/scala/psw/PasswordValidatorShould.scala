@@ -43,4 +43,41 @@ class PasswordValidatorShould
     }
   }
 
+
+  "Lowercase Letter" - {
+    val passwordValidator: PasswordValidator =
+      PasswordValidator(PasswordValidator.hasLowerCaseLetter)
+    "should be invalid if does not contain a lower letter" in {
+      passwordValidator.isValid("A") shouldBe false
+    }
+
+    "should be valid if contains at least a capital letter" in {
+      passwordValidator.isValid("a") shouldBe true
+    }
+  }
+
+  "Number" - {
+    val passwordValidator: PasswordValidator =
+      PasswordValidator(PasswordValidator.hasNumber)
+    "should be invalid if does not contain a number" in {
+      passwordValidator.isValid("a") shouldBe false
+    }
+
+    "should be valid if contains at least a number" in {
+      passwordValidator.isValid("1") shouldBe true
+    }
+  }
+
+   "Underscore" - {
+    val passwordValidator: PasswordValidator =
+      PasswordValidator(PasswordValidator.hasUnderscore)
+    "should be invalid if does not contain an underscore" in {
+      passwordValidator.isValid("a") shouldBe false
+    }
+
+    "should be valid if contains at least an underscore" in {
+      passwordValidator.isValid("_") shouldBe true
+    }
+  }
+
 }
