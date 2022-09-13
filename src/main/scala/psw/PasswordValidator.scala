@@ -31,8 +31,15 @@ object PasswordValidator {
     hasUnderscore
   )
 
-   def validationTwo = compose(
+  def validationTwo = compose(
     isValidLength(6),
+    hasCapitalLetter,
+    hasLowerCaseLetter,
+    hasNumber
+  )
+
+  def validationThree = compose(
+    isValidLength(16),
     hasCapitalLetter,
     hasLowerCaseLetter,
     hasNumber
