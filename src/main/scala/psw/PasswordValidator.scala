@@ -3,17 +3,17 @@ package psw
 object PasswordValidator {
   def isValidLength(pwd: String): Boolean = pwd.length() > 8
 
-  def hasCapitalLetter(pwd: String): Boolean =
-    pwd.filter(ch => ch.toUpper == ch).length() > 0
+  def hasCapitalLetter = hasSomeLetter(_.isUpper)
 
-  def hasLowerCaseLetter(pwd: String): Boolean =
-    pwd.filter(ch => ch.toLower == ch).length() > 0
+  def hasLowerCaseLetter = hasSomeLetter(_.isLower)
 
-  def hasNumber(pwd: String): Boolean =
-    pwd.filter(_.isDigit).length() > 0
+  def hasNumber = hasSomeLetter(_.isDigit)
 
-  def hasUnderscore(pwd: String): Boolean =
-    pwd.filter(_ == '_').length() > 0
+  def hasUnderscore = hasSomeLetter(_ == '_')
+
+  private def hasSomeLetter(validate: Char => Boolean)(str: String): Boolean = {
+    str.filter(validate).length() > 0
+  }
 }
 
 class PasswordValidator(validator: String => Boolean) {
