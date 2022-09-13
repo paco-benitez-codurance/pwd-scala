@@ -13,15 +13,21 @@ object PasswordValidator {
 
   type predicate = String => Boolean
 
-  def compose(func: predicate *): String => Boolean =  {
-    str => func.foldLeft(true)((res, b) => res && b(str))
+  def compose(func: predicate*): String => Boolean = { str =>
+    func.foldLeft(true)((res, b) => res && b(str))
   }
 
   private def hasSomeLetter(validate: Char => Boolean)(str: String): Boolean = {
     str.filter(validate).length() > 0
   }
 
-  def iterationOne = compose(isValidLength, hasCapitalLetter, hasNumber, hasUnderscore)
+  def validationOne = compose(
+    isValidLength,
+    hasCapitalLetter,
+    hasLowerCaseLetter,
+    hasNumber,
+    hasUnderscore
+  )
 }
 
 class PasswordValidator(validator: String => Boolean) {

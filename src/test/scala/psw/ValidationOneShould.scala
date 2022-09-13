@@ -6,13 +6,13 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.prop.TableDrivenPropertyChecks
 
-class IterationOneShould
+class ValidationOneShould
     extends AnyFreeSpec
     with Matchers
     with BeforeAndAfterEach
     with TableDrivenPropertyChecks {
 
-  val passwordValidator = PasswordValidator(PasswordValidator.iterationOne)
+  val passwordValidator = PasswordValidator(PasswordValidator.validationOne)
 
   val passwords =
     Table(
@@ -20,12 +20,11 @@ class IterationOneShould
       ("abcdABCD1234_", true),
       ("abcdABCD1234", false),
       ("abcdABCD_", false),
-      ("ABCD1234_", false),
+      ("ABCD1234_", false)
     )
 
   forAll(passwords) { (pwd, expected) =>
-    PasswordValidator(PasswordValidator.iterationOne)
-      .isValid(pwd) shouldBe expected
+    passwordValidator.isValid(pwd) shouldBe expected
   }
 
 }
