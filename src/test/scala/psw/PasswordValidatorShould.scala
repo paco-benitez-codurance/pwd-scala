@@ -4,11 +4,13 @@ import org.scalatest.flatspec._
 import org.scalatest.matchers.should._
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.prop.TableDrivenPropertyChecks
 
 class PasswordValidatorShould
     extends AnyFreeSpec
     with Matchers
-    with BeforeAndAfterEach {
+    with BeforeAndAfterEach
+    with TableDrivenPropertyChecks {
 
   override def beforeEach(): Unit = {}
 
@@ -43,7 +45,6 @@ class PasswordValidatorShould
     }
   }
 
-
   "Lowercase Letter" - {
     val passwordValidator: PasswordValidator =
       PasswordValidator(PasswordValidator.hasLowerCaseLetter)
@@ -68,7 +69,7 @@ class PasswordValidatorShould
     }
   }
 
-   "Underscore" - {
+  "Underscore" - {
     val passwordValidator: PasswordValidator =
       PasswordValidator(PasswordValidator.hasUnderscore)
     "should be invalid if does not contain an underscore" in {
@@ -77,6 +78,23 @@ class PasswordValidatorShould
 
     "should be valid if contains at least an underscore" in {
       passwordValidator.isValid("_") shouldBe true
+    }
+  }
+
+  "Composition" - {
+
+    val booleanCombinations =
+      Table(
+        ("inputs", "expected"),
+        ((true, true), true),
+        ((true, false), false),
+        ((false, true), false),
+        ((false, false), false)
+      )
+
+    forAll(booleanCombinations) { (input, expected) =>
+      new PasswordValidator(PasswordValidator.compose(_ => input._1, _ => input._2))
+        .isValid("a string") shouldBe expected
     }
   }
 

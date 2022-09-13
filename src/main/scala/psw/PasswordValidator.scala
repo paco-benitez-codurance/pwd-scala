@@ -11,6 +11,12 @@ object PasswordValidator {
 
   def hasUnderscore = hasSomeLetter(_ == '_')
 
+  type predicate = String => Boolean
+
+  def compose(func: predicate *): String => Boolean =  {
+    str => func.foldLeft(true)((res, b) => res && b(str))
+  }
+
   private def hasSomeLetter(validate: Char => Boolean)(str: String): Boolean = {
     str.filter(validate).length() > 0
   }
