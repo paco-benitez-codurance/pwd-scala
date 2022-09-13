@@ -32,4 +32,14 @@ class PasswordValidatorShould
     }
   }
 
+  "Capital Letter" - {
+    "should be invalid if does not contain at least a capital letter" in {
+      passwordValidator.isValid("abcdefghi") shouldBe false
+    }
+
+    "should be valid if contains at least a capital letter" in {
+      passwordValidator.isValid("abcdefghI") shouldBe true
+    }
+  }
+
 }
