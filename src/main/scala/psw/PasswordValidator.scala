@@ -1,7 +1,9 @@
 package psw
 
 object PasswordValidator {
-  def isValidLength(pwd: String): Boolean = pwd.length() > 8
+  def isValidLength(minLength: Int)(pwd: String): Boolean = {
+    pwd.length() > minLength
+  }
 
   def hasCapitalLetter = hasSomeLetter(_.isUpper)
 
@@ -22,11 +24,18 @@ object PasswordValidator {
   }
 
   def validationOne = compose(
-    isValidLength,
+    isValidLength(8),
     hasCapitalLetter,
     hasLowerCaseLetter,
     hasNumber,
     hasUnderscore
+  )
+
+   def validationTwo = compose(
+    isValidLength(6),
+    hasCapitalLetter,
+    hasLowerCaseLetter,
+    hasNumber
   )
 }
 

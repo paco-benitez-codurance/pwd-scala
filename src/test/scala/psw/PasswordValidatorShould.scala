@@ -10,7 +10,6 @@ class PasswordValidatorShould
     with Matchers
     with TableDrivenPropertyChecks {
 
-
   "General" - {
     val passwordValidator: PasswordValidator = PasswordValidator(_ => true)
     "Not null argument" in {
@@ -20,7 +19,7 @@ class PasswordValidatorShould
 
   "Length" - {
     val passwordValidator: PasswordValidator =
-      PasswordValidator(PasswordValidator.isValidLength)
+      PasswordValidator(PasswordValidator.isValidLength(8))
     "should be invalid if less than 8 characters" in {
       passwordValidator.isValid("1234") shouldBe false
     }
@@ -90,8 +89,12 @@ class PasswordValidatorShould
       )
 
     forAll(booleanCombinations) { (input, expected) =>
-      new PasswordValidator(PasswordValidator.compose(_ => input._1, _ => input._2))
-        .isValid("a string") shouldBe expected
+      s"$input should be combined in $expected" in {
+        new PasswordValidator(
+          PasswordValidator.compose(_ => input._1, _ => input._2)
+        )
+          .isValid("a string") shouldBe expected
+      }
     }
   }
 
