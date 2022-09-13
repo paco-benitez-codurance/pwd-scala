@@ -10,19 +10,18 @@ class PasswordValidatorShould
     with Matchers
     with BeforeAndAfterEach {
 
-  var passwordValidator: PasswordValidator = PasswordValidator()
-
-  override def beforeEach(): Unit = {
-    passwordValidator = PasswordValidator()
-  }
+  override def beforeEach(): Unit = {}
 
   "General" - {
+    val passwordValidator: PasswordValidator = PasswordValidator(_ => true)
     "Not null argument" in {
       an[AssertionError] should be thrownBy passwordValidator.isValid(null)
     }
   }
 
   "Length" - {
+    val passwordValidator: PasswordValidator =
+      PasswordValidator(PasswordValidator.isValidLength)
     "should be invalid if less than 8 characters" in {
       passwordValidator.isValid("1234") shouldBe false
     }
@@ -33,12 +32,14 @@ class PasswordValidatorShould
   }
 
   "Capital Letter" - {
+    val passwordValidator: PasswordValidator =
+      PasswordValidator(PasswordValidator.hasCapitalLetter)
     "should be invalid if does not contain at least a capital letter" in {
-      passwordValidator.isValid("abcdefghi") shouldBe false
+      passwordValidator.isValid("a") shouldBe false
     }
 
     "should be valid if contains at least a capital letter" in {
-      passwordValidator.isValid("abcdefghI") shouldBe true
+      passwordValidator.isValid("A") shouldBe true
     }
   }
 
