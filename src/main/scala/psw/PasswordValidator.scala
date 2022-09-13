@@ -1,5 +1,17 @@
 package psw
 
+import cats.Monad
+import cats.kernel.Monoid
+
+type Predicate = String => Boolean
+
+object Validators {
+  val monoidValidator: Monoid[Predicate] = new Monoid[Predicate] {
+    def empty: Predicate = _ => true
+    def combine(x: Predicate, y: Predicate): Predicate = (str: String) => x(str) && y(str)
+  }
+}
+
 object PasswordValidator {
   def isValidLength(minLength: Int)(pwd: String): Boolean = {
     pwd.length() > minLength
@@ -13,9 +25,8 @@ object PasswordValidator {
 
   def hasUnderscore = hasSomeLetter(_ == '_')
 
-  type predicate = String => Boolean
 
-  def compose(func: predicate*): String => Boolean = { str =>
+  def compose(func: Predicate*): String => Boolean = { str =>
     func.foldLeft(true)((res, b) => res && b(str))
   }
 
