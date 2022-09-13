@@ -20,6 +20,8 @@ object PasswordValidator {
   private def hasSomeLetter(validate: Char => Boolean)(str: String): Boolean = {
     str.filter(validate).length() > 0
   }
+
+  def iterationOne = compose(isValidLength, hasCapitalLetter, hasNumber, hasUnderscore)
 }
 
 class PasswordValidator(validator: String => Boolean) {

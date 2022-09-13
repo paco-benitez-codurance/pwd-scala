@@ -2,17 +2,14 @@ package psw
 
 import org.scalatest.flatspec._
 import org.scalatest.matchers.should._
-import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.prop.TableDrivenPropertyChecks
 
 class PasswordValidatorShould
     extends AnyFreeSpec
     with Matchers
-    with BeforeAndAfterEach
     with TableDrivenPropertyChecks {
 
-  override def beforeEach(): Unit = {}
 
   "General" - {
     val passwordValidator: PasswordValidator = PasswordValidator(_ => true)
